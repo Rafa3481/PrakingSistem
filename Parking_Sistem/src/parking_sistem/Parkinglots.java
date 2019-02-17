@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import static parking_sistem.Main.main0;
 
 
@@ -61,6 +62,8 @@ public class Parkinglots extends javax.swing.JFrame {
     
     String puesto,carro,disponible,placa,he,hs,fecha;
     
+    public static boolean pos[][];
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,7 +74,7 @@ public class Parkinglots extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        parkingtb = new javax.swing.JTable();
+        parkingt = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -95,7 +98,7 @@ public class Parkinglots extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(771, 345));
         setResizable(false);
 
-        parkingtb.setModel(new javax.swing.table.DefaultTableModel(
+        parkingt.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null},
@@ -120,12 +123,12 @@ public class Parkinglots extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        parkingtb.addMouseListener(new java.awt.event.MouseAdapter() {
+        parkingt.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                parkingtbMouseClicked(evt);
+                parkingtMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(parkingtb);
+        jScrollPane1.setViewportView(parkingt);
 
         jButton1.setText("Set Parking");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -279,9 +282,9 @@ public class Parkinglots extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void parkingtbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parkingtbMouseClicked
-        jLabel1.setText("Estacionamiento No. "+Integer.toString(parkingtb.getSelectedColumn()+1)+"-"+Integer.toString(parkingtb.getSelectedRow()+1));
-    }//GEN-LAST:event_parkingtbMouseClicked
+    private void parkingtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parkingtMouseClicked
+        jLabel1.setText("Estacionamiento No. "+Integer.toString(parkingt.getSelectedColumn()+1)+"-"+Integer.toString(parkingt.getSelectedRow()+1));
+    }//GEN-LAST:event_parkingtMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
@@ -300,13 +303,11 @@ public class Parkinglots extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int c = 0;
         try {
-            ArrayList<String> aux = new ArrayList<>();
-            
+              
             BufferedWriter bf = new BufferedWriter(new FileWriter(main0));
             
-            puesto = (Integer.toString(parkingtb.getSelectedColumn()+1)+"-"+Integer.toString(parkingtb.getSelectedRow()+1));
+            puesto = (Integer.toString(parkingt.getSelectedColumn()+1)+"-"+Integer.toString(parkingt.getSelectedRow()+1));
             carro = jTextField1.getText();
             placa = jTextField2.getText();
             Calendar ca = Calendar.getInstance();
@@ -315,13 +316,17 @@ public class Parkinglots extends javax.swing.JFrame {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             he = sdf.format(cal.getTime());
-            String reg = (""+c+","+puesto+","+carro+","+placa+","+fecha+","+he);
-            aux.add(reg);
+            String reg = (""+puesto+","+carro+","+placa+","+fecha+","+he);
             
-            bf.write(aux.get(c));
+            bf.write(reg);
             bf.newLine();
-            c++;
             bf.close();
+            
+            pos[parkingt.getSelectedColumn()+1][parkingt.getSelectedRow()+1] = true;
+            
+            DefaultTableModel model = new DefaultTableModel();
+            parkingt table = new parkingt(model);
+            model.setValueAt(true, parkingt.getSelectedColumn(), parkingt.getSelectedRow());
             
             jTextField1.setText("");
             jTextField2.setText("");
@@ -392,6 +397,6 @@ public class Parkinglots extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable parkingtb;
+    private javax.swing.JTable parkingt;
     // End of variables declaration//GEN-END:variables
 }
