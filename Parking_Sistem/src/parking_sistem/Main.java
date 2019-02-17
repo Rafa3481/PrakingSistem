@@ -22,7 +22,8 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
     }
-
+    
+    File main0, history;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,6 +37,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Parking4u 0.1");
         setMaximumSize(new java.awt.Dimension(210, 151));
         setMinimumSize(new java.awt.Dimension(210, 151));
         setPreferredSize(new java.awt.Dimension(229, 182));
@@ -79,11 +81,21 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
-        main = new File("parking.txt");
+        main0 = new File("parking.txt");
+        history = new File("parking_history.txt");
         Parkinglots op = new Parkinglots();
-        if(!main.exists()){
+        if(!main0.exists()){
             try {
-                main.createNewFile();
+                main0.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        if(!history.exists()){
+            try {
+                history.createNewFile();
             } catch (IOException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
