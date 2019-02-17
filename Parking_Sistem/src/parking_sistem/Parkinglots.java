@@ -6,7 +6,6 @@
 package parking_sistem;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
@@ -74,7 +73,7 @@ public class Parkinglots extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        parkingt = new javax.swing.JTable();
+        parkingtb = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -98,7 +97,7 @@ public class Parkinglots extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(771, 345));
         setResizable(false);
 
-        parkingt.setModel(new javax.swing.table.DefaultTableModel(
+        parkingtb.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null},
@@ -123,12 +122,12 @@ public class Parkinglots extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        parkingt.addMouseListener(new java.awt.event.MouseAdapter() {
+        parkingtb.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                parkingtMouseClicked(evt);
+                parkingtbMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(parkingt);
+        jScrollPane1.setViewportView(parkingtb);
 
         jButton1.setText("Set Parking");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -249,19 +248,20 @@ public class Parkinglots extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 5, Short.MAX_VALUE)
                         .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -282,9 +282,9 @@ public class Parkinglots extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void parkingtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parkingtMouseClicked
-        jLabel1.setText("Estacionamiento No. "+Integer.toString(parkingt.getSelectedColumn()+1)+"-"+Integer.toString(parkingt.getSelectedRow()+1));
-    }//GEN-LAST:event_parkingtMouseClicked
+    private void parkingtbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parkingtbMouseClicked
+        jLabel1.setText("Estacionamiento No. "+Integer.toString(parkingtb.getSelectedRow()+1)+"-"+Integer.toString(parkingtb.getSelectedColumn()+1));
+    }//GEN-LAST:event_parkingtbMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
@@ -299,15 +299,21 @@ public class Parkinglots extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if(jTextField1.getText().trim().equals("") && jTextField2.getText().trim().equals("")){
             JOptionPane.showMessageDialog(null,"Hace falta el tipo de auto o la placa del auto");
+        }else{
+            DefaultTableModel model = (DefaultTableModel)parkingtb.getModel();
+            model.setValueAt(null, parkingtb.getSelectedRow(), parkingtb.getSelectedColumn());
+            
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
         try {
-              
-            BufferedWriter bf = new BufferedWriter(new FileWriter(main0));
+          
             
-            puesto = (Integer.toString(parkingt.getSelectedColumn()+1)+"-"+Integer.toString(parkingt.getSelectedRow()+1));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(main0));
+            
+            puesto = (Integer.toString(parkingtb.getSelectedRow()+1)+"-"+Integer.toString(parkingtb.getSelectedColumn()+1));
             carro = jTextField1.getText();
             placa = jTextField2.getText();
             Calendar ca = Calendar.getInstance();
@@ -318,21 +324,18 @@ public class Parkinglots extends javax.swing.JFrame {
             he = sdf.format(cal.getTime());
             String reg = (""+puesto+","+carro+","+placa+","+fecha+","+he);
             
-            bf.write(reg);
-            bf.newLine();
-            bf.close();
+            bw.write(reg);
+            bw.newLine();
             
-            pos[parkingt.getSelectedColumn()+1][parkingt.getSelectedRow()+1] = true;
-            
-            DefaultTableModel model = new DefaultTableModel();
-            parkingt table = new parkingt(model);
-            model.setValueAt(true, parkingt.getSelectedColumn(), parkingt.getSelectedRow());
-            
+            DefaultTableModel model = (DefaultTableModel)parkingtb.getModel();
+            model.setValueAt("Ocupado", parkingtb.getSelectedRow(), parkingtb.getSelectedColumn());
+                        
             jTextField1.setText("");
             jTextField2.setText("");
             
             JOptionPane.showMessageDialog(this, "Gracias por usar nuestros servicios");
             
+            bw.close();
         } catch (IOException ex) {
             Logger.getLogger(Parkinglots.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -397,6 +400,6 @@ public class Parkinglots extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable parkingt;
+    private javax.swing.JTable parkingtb;
     // End of variables declaration//GEN-END:variables
 }
