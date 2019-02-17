@@ -5,11 +5,19 @@
  */
 package parking_sistem;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static parking_sistem.Main.main0;
+
 
 /**
  *
@@ -50,6 +58,9 @@ public class Parkinglots extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         jLabel8.setText(sdf.format(cal.getTime()));
     }
+    
+    String puesto,carro,disponible,placa,he,hs,fecha;
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,6 +128,11 @@ public class Parkinglots extends javax.swing.JFrame {
         jScrollPane1.setViewportView(parkingtb);
 
         jButton1.setText("Set Parking");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Exit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -282,6 +298,46 @@ public class Parkinglots extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Hace falta el tipo de auto o la placa del auto");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int c = 0;
+        try {
+            ArrayList<String> aux = new ArrayList<>();
+            
+            BufferedWriter bf = new BufferedWriter(new FileWriter(main0));
+            
+            puesto = (Integer.toString(parkingtb.getSelectedColumn()+1)+"-"+Integer.toString(parkingtb.getSelectedRow()+1));
+            carro = jTextField1.getText();
+            placa = jTextField2.getText();
+            Calendar ca = Calendar.getInstance();
+            SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+            fecha = sd.format(ca.getTime());
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            he = sdf.format(cal.getTime());
+            String reg = (""+c+","+puesto+","+carro+","+placa+","+fecha+","+he);
+            aux.add(reg);
+            
+            bf.write(aux.get(c));
+            bf.newLine();
+            c++;
+            bf.close();
+            
+            jTextField1.setText("");
+            jTextField2.setText("");
+            
+            JOptionPane.showMessageDialog(this, "Gracias por usar nuestros servicios");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Parkinglots.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

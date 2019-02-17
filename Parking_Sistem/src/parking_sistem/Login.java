@@ -5,6 +5,8 @@
  */
 package parking_sistem;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,6 +21,8 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -95,18 +99,41 @@ public class Login extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(jTextField1.getText().equals("admin1") || jTextField1.getText().equals("admin2")){
-            if(jTextField2.getText().equals("1") || jTextField2.getText().equals("2")){
-                ParkinglotsADMIN op = new ParkinglotsADMIN();
-                op.setVisible(true);
-                this.setVisible(false);
-            }   
-        }else{
-            JOptionPane.showMessageDialog(this,"Usuario o contraseña incorectos");
+        int hour, min;
+    
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+        SimpleDateFormat sd = new SimpleDateFormat("mm");
+        hour = Integer.parseInt(sdf.format(cal.getTime()));
+        min = Integer.parseInt(sd.format(cal.getTime()));
+        if(hour >= 6 && hour <= 14){
+            if(jTextField1.getText().equals("admin1")){
+                if(jTextField2.getText().equals("1")){
+                    ParkinglotsADMIN op = new ParkinglotsADMIN();
+                    op.setVisible(true);
+                    this.setVisible(false);
+                }   
+            }else{
+                JOptionPane.showMessageDialog(this,"Usuario o contraseña incorectos, utilice el usuario para el turno de 6:00-14:00");
+            }
+        }if(hour >= 14 && hour <= 22 && min >= 1){
+            if(jTextField1.getText().equals("admin2")){
+                if(jTextField2.getText().equals("2")){
+                    ParkinglotsADMIN op = new ParkinglotsADMIN();
+                    op.setVisible(true);
+                    this.setVisible(false);
+                }   
+            }else{
+                JOptionPane.showMessageDialog(this,"Usuario o contraseña incorectos, utilice el usuario para el turno de 14:01-22:00");
+            }
+            
         }
+            
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

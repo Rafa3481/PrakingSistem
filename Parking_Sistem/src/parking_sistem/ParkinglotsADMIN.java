@@ -47,7 +47,8 @@ public class ParkinglotsADMIN extends javax.swing.JFrame {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         jLabel8.setText(sdf.format(cal.getTime()));
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

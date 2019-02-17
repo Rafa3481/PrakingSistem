@@ -15,7 +15,9 @@ import java.util.logging.Logger;
  * @author Bloque G
  */
 public class Main extends javax.swing.JFrame {
-    File main;
+    
+
+    
     /**
      * Creates new form Main
      */
@@ -23,7 +25,7 @@ public class Main extends javax.swing.JFrame {
         initComponents();
     }
     
-    File main0, history;
+    static File main0, history;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
