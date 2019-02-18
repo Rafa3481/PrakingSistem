@@ -10,12 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static parking_sistem.Main.history;
 import static parking_sistem.Main.main0;
 
 
@@ -32,6 +32,7 @@ public class Parkinglots extends javax.swing.JFrame {
         initComponents();
         clock();
         date();
+        price();
     }
     
     public void clock(){
@@ -59,9 +60,16 @@ public class Parkinglots extends javax.swing.JFrame {
         jLabel8.setText(sdf.format(cal.getTime()));
     }
     
+    public void price(){
+        jLabel9.setText("Tarifa 30 min: "+p30+"$");
+        jLabel10.setText("Tarifa 30 min: "+p60+"$");        
+    }
+    
     String puesto,carro,disponible,placa,he,hs,fecha;
     
-    public static boolean pos[][];
+    public String reg;
+    
+    public static float p30=2000, p60=5000;
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -297,11 +305,41 @@ public class Parkinglots extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
         if(jTextField1.getText().trim().equals("") && jTextField2.getText().trim().equals("")){
+            
             JOptionPane.showMessageDialog(null,"Hace falta el tipo de auto o la placa del auto");
+       
         }else{
-            DefaultTableModel model = (DefaultTableModel)parkingtb.getModel();
-            model.setValueAt(null, parkingtb.getSelectedRow(), parkingtb.getSelectedColumn());
+            
+            try {
+                
+                BufferedWriter bb = new BufferedWriter(new FileWriter(history));
+                
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                hs = sdf.format(cal.getTime());
+                reg = (reg+","+hs);
+
+                bb.write(reg);
+                bb.newLine();
+                
+                DefaultTableModel model = (DefaultTableModel)parkingtb.getModel();
+                model.setValueAt(null, parkingtb.getSelectedRow(), parkingtb.getSelectedColumn());
+                
+                jTextField1.setText("");
+                jTextField2.setText("");
+                
+                bb.close();
+            
+                
+                JOptionPane.showMessageDialog(this, "Que tenga un buen viaje");
+            } catch (IOException ex) {
+                Logger.getLogger(Parkinglots.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
             
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -313,6 +351,7 @@ public class Parkinglots extends javax.swing.JFrame {
             
             BufferedWriter bw = new BufferedWriter(new FileWriter(main0));
             
+            
             puesto = (Integer.toString(parkingtb.getSelectedRow()+1)+"-"+Integer.toString(parkingtb.getSelectedColumn()+1));
             carro = jTextField1.getText();
             placa = jTextField2.getText();
@@ -322,10 +361,12 @@ public class Parkinglots extends javax.swing.JFrame {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             he = sdf.format(cal.getTime());
-            String reg = (""+puesto+","+carro+","+placa+","+fecha+","+he);
+            reg = (""+puesto+","+carro+","+placa+","+fecha+","+he);
             
             bw.write(reg);
+            
             bw.newLine();
+            
             
             DefaultTableModel model = (DefaultTableModel)parkingtb.getModel();
             model.setValueAt("Ocupado", parkingtb.getSelectedRow(), parkingtb.getSelectedColumn());
@@ -336,6 +377,7 @@ public class Parkinglots extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Gracias por usar nuestros servicios");
             
             bw.close();
+            
         } catch (IOException ex) {
             Logger.getLogger(Parkinglots.class.getName()).log(Level.SEVERE, null, ex);
         }
